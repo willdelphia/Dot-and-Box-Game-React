@@ -36,7 +36,7 @@ class Board extends Component {
     super();
 
     this.state = {
-      dimension: 7
+      dimension: 8
     };
 
     const bars = {};
@@ -69,6 +69,8 @@ class Board extends Component {
     this.state = {
       dimension: this.state.dimension,
       whoseTurn: 0,
+      lastBar: null,
+
       bars: bars,
       squares: squares
     };
@@ -82,6 +84,7 @@ class Board extends Component {
     };
     bars[address] = bar;
     this.setState({
+      lastBar: address,
       bars: bars
     }, () => {});
     return this.fillSquares(this.squaresCompleted(this.state.bars, address));
@@ -405,20 +408,10 @@ computerMoveMaker = () => {
 
 
 componentDidUpdate(prevProps) {
-  // if (this.props.whoseTurn === 1) {
-  //   console.log("The opponent will now consider where to move...");
-  //   this.oppAssessMove(this.state.bars);
-  // } else {
-  //   this.humanFilledSquareCascade(this.state.bars);
-  // }
+  //check if the game is over
 }
 
-barStyleLookup = address => {
-  const style = {
-    background: this.state.bars[address].filled ? "black" : "transparent"
-  };
-  return style;
-};
+
 
 squareStyleLookup = address => {
   const square = this.state.squares[address];
@@ -444,34 +437,25 @@ render() {
         const hrow = [];
         for (let x = 0; x < this.state.dimension; x++) {
           const address = x + "-" + y + "_" + (x + 1) + "-" + y;
-          hrow.push( <
-            >
-            <
-            Dot / > {
-              x < this.state.dimension - 1 ? ( <
-                Hbar address = {
-                  address
-                }
-                click = {
-                  this.humanMoveMaker
-                }
-                style = {
-                  this.barStyleLookup(address)
-                }
+          hrow.push( <>
+            <Dot / > {
+              x < this.state.dimension - 1 ? (
+                <Hbar 
+                  address = {address}
+                  click = {this.humanMoveMaker}
+                  filled = {this.state.bars[address].filled} 
+                  lastBar = {this.state.lastBar}
                 />
               ) : null
-            } <
-            />
+            } </>
           );
         }
-        return ( <
-          div className = "row hrow"
-          key = {
-            "hrow" + y
-          } > {
-            hrow
-          } <
-          /div>
+        return (
+                <div 
+                  className = "row hrow" 
+                  key = {"hrow" + y} >
+                  {hrow} 
+                </div>
         );
       })()
     );
@@ -482,50 +466,30 @@ render() {
           for (let x = 0; x < this.state.dimension; x++) {
             const address = x + "-" + y + "_" + x + "-" + (y + 1);
             const squareAddress = x + "-" + y;
-            vrow.push( <
-              >
-              <
-              Vbar address = {
-                address
-              }
-              click = {
-                this.humanMoveMaker
-              }
-              style = {
-                this.barStyleLookup(address)
-              }
-              /> {
-                x < this.state.dimension - 1 ? ( <
-                  Square address = {
-                    squareAddress
-                  }
-                  style = {
-                    this.squareStyleLookup(squareAddress)
-                  }
-                  />
-                ) : null
-              } <
-              />
+            vrow.push(
+              <>
+              <Vbar address = {address}
+                    click = {this.humanMoveMaker}
+                    filled = {this.state.bars[address].filled} 
+                    lastBar = {this.state.lastBar}
+                    /> 
+              {x < this.state.dimension - 1 ? ( <Square address = {squareAddress}
+                style = {this.squareStyleLookup(squareAddress)}
+                />) : null} 
+              </>
             );
           }
-          return ( <
-            div className = "row vrow"
-            key = {
-              "vrow" + y
-            } > {
-              vrow
-            } <
-            /div>
+          return ( <div 
+                    className = "row vrow"
+                    key = {"vrow" + y} > 
+                    {vrow} 
+                    </div>
           );
         })()
       );
     }
   }
-  return <div style = {
-    boardStyle
-  } > {
-    boardArray
-  } < /div>;
+  return <div style = {boardStyle} > {boardArray} </div>;
 }
 }
 

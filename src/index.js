@@ -28,7 +28,7 @@ class App extends Component {
     return (
       <>
         <Board whoseTurn={this.state.whoseTurn} chessClock={this.chessClock} />
-        <div> Hello {this.state.whoseTurn}</div>
+        <div> {this.state.whoseTurn ? "Computer's Turn" :  "Human's Turn"}</div>
       </>
     );
   }
