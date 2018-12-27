@@ -85,7 +85,7 @@ class Board extends Component {
       bars: bars
     }, () => {});
     return this.fillSquares(this.squaresCompleted(this.state.bars, address));
-  };
+  }; 
 
   fillSquares = addresses => {
     let wasASquareFilled = false;
