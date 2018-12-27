@@ -39,7 +39,7 @@ class Board extends Component {
     super();
 
     this.state = {
-      dimension: 8
+      dimension: 15
     };
 
     const bars = {};
@@ -48,22 +48,10 @@ class Board extends Component {
     for (let y = 0; y < this.state.dimension; y++) {
       for (let x = 0; x < this.state.dimension; x++) {
         if (x < this.state.dimension - 1) {
-          bars[x + "-" + y + "_" + (x + 1) + "-" + y] = new barObj(
-            x,
-            y,
-            x + 1,
-            y,
-            "h"
-          );
+          bars[x + "-" + y + "_" + (x + 1) + "-" + y] = new barObj(x,y,x+1,y,"h");
         } //hbar
         if (y < this.state.dimension - 1) {
-          bars[x + "-" + y + "_" + x + "-" + (y + 1)] = new barObj(
-            x,
-            y,
-            x,
-            y + 1,
-            "v"
-          );
+          bars[x + "-" + y + "_" + x + "-" + (y + 1)] = new barObj(x,y,x,y+1,"v");
         } //vbar
         squares[x + "-" + y] = new squareObj(x, y);
       }
@@ -91,8 +79,6 @@ class Board extends Component {
       bars: bars
     }, () => {});
     return this.fillSquares(this.squaresCompleted(this.state.bars, address));
-
-
   };
 
   fillSquares = addresses => {
@@ -372,7 +358,7 @@ class Board extends Component {
   };
 
   humanMoveMaker = address => {
-    if (!this.props.whoseTurn) { //humans move
+    if (!this.props.whoseTurn) { //human's move
       if (address) {
         if (!this.state.bars[address].filled) {
           const filledSquares = this.fillABar(address);
@@ -441,7 +427,7 @@ render() {
         for (let x = 0; x < this.state.dimension; x++) {
           const address = x + "-" + y + "_" + (x + 1) + "-" + y;
           hrow.push( <>
-            <Dot / > {
+            <Dot /> {
               x < this.state.dimension - 1 ? (
                 <Hbar 
                   address = {address}
@@ -476,9 +462,10 @@ render() {
                     filled = {this.state.bars[address].filled} 
                     lastBar = {this.state.lastBar}
                     /> 
-              {x < this.state.dimension - 1 ? ( <Square address = {squareAddress}
-                style = {this.squareStyleLookup(squareAddress)}
-                />) : null} 
+              {x < this.state.dimension - 1 ? ( 
+              <Square address = {squareAddress}
+                    style = {this.squareStyleLookup(squareAddress)}
+                    />) : null} 
               </>
             );
           }
