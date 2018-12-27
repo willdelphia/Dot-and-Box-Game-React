@@ -1,0 +1,49 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  font-size: 8px;
+}
+
+.row > * {
+  flex-shrink: 0;
+}
+
+.dot {
+  background-color: black;
+  width: 5px;
+  height: 5px;
+}
+
+.hbar {
+  width: 20px;
+  height: 5px;
+}
+
+.vbar {
+  width: 5px;
+  height: 20px;
+}
+
+.clicker {
+  height: 18px;
+  width: 18px;
+}
+
+.hbar .clicker {
+  transform: translate(1px, -6px) rotate(45deg);
+}
+
+.vbar .clicker {
+  transform: translate(-6px, 1.5px) rotate(45deg);
+}
+
+.square {
+  width: 20px;
+  height: 20px;
+}
+
+/* does it commit? */
