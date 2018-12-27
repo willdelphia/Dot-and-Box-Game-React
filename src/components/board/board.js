@@ -32,6 +32,9 @@ class squareObj {
 }
 
 class Board extends Component {
+
+  timeOut = 10;
+
   constructor() {
     super();
 
@@ -374,11 +377,11 @@ class Board extends Component {
         if (!this.state.bars[address].filled) {
           const filledSquares = this.fillABar(address);
           if (filledSquares) {
-            setTimeout(()=> this.humanMoveMaker(), 100); 
+            setTimeout(()=> this.humanMoveMaker(), this.timeOut); 
           } //if squares were filled
            else {
             this.props.chessClock().then((result) => {
-              setTimeout(()=> this.computerMoveMaker(), 300);  
+              setTimeout(()=> this.computerMoveMaker(), this.timeOut);  
             });
           }
         } // if not filled
@@ -386,7 +389,7 @@ class Board extends Component {
        else {
         this.humanFilledSquareCascade(this.state.bars).then((result) => {
           if(result) {
-            setTimeout(()=> this.humanMoveMaker(), 100); 
+            setTimeout(()=> this.humanMoveMaker(), this.timeOut); 
           }
 
         });
@@ -399,7 +402,7 @@ computerMoveMaker = () => {
   let filledSquares = this.oppAssessMove(this.state.bars);
   if (filledSquares) {
    
-    setTimeout(()=> this.computerMoveMaker(), 100); 
+    setTimeout(()=> this.computerMoveMaker(), this.timeOut); 
 
   } else {
     this.props.chessClock();
