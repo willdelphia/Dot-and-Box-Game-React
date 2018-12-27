@@ -83,11 +83,11 @@ class Board extends Component {
 
   fillSquares = addresses => {
     let wasASquareFilled = false;
-    const squares = { ...this.state.squares
-    };
+    const squares = { ...this.state.squares};
     addresses.forEach(address => {
       squares[address.filladdress].filled = true;
       squares[address.filladdress].filledBy = this.props.whoseTurn;
+      this.props.addPoint(this.props.whoseTurn);
       wasASquareFilled = true;
     });
     this.setState({

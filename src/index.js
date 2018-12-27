@@ -9,7 +9,9 @@ class App extends Component {
     super();
 
     this.state = {
-      whoseTurn: 0
+      whoseTurn: 0,
+      humanPoints: 0,
+      computerPoints: 0
     };
   }
 
@@ -24,12 +26,40 @@ class App extends Component {
     });
   };
 
+  addPoint = (player) => {
+    if(player){
+      this.setState((state, props) => {
+        const newPoits = state.computerPoints + 1;
+        return { computerPoints: newPoits };
+      });
+    }
+    else{
+      this.setState((state, props) => {
+        const newPoits = state.humanPoints + 1;
+        return { humanPoints: newPoits };
+      });
+    }
+     
+  };
+
   render() {
+
+    const boardStyle = {
+      boxShadow: this.state.whoseTurn ? 
+      "0px 5px 60px  rgba(255, 99, 71, 0.18), 0px 5px 20px  rgba(0, 0, 0, 0.18)" :
+      "0px 5px 60px  rgba(173, 215, 229, 0.18), 0px 5px 20px  rgba(0, 0, 0, 0.18)"
+
+    }
+
     return (
-      <>
-        <Board whoseTurn={this.state.whoseTurn} chessClock={this.chessClock} />
-        <div> {this.state.whoseTurn ? "Computer's Turn" :  "Human's Turn"}</div>
-      </>
+      <div className="container">
+        <div className="containerInner"> 
+          <div className="boardLayer" style={boardStyle}>
+            <Board whoseTurn={this.state.whoseTurn} chessClock={this.chessClock} addPoint={this.addPoint} />
+          </div>
+        <div className="infoBox"> {this.state.whoseTurn ? "Computer's Turn" :  "Human's Turn"} <br/> Human: {this.state.humanPoints} / Computer: {this.state.computerPoints}</div>
+        </div>
+      </div>
     );
   }
 }
