@@ -85,7 +85,9 @@ class Board extends Component {
       bars: bars
     }, () => {});
     return this.fillSquares(this.squaresCompleted(this.state.bars, address));
-  }; 
+
+
+  };
 
   fillSquares = addresses => {
     let wasASquareFilled = false;
@@ -369,11 +371,11 @@ class Board extends Component {
         if (!this.state.bars[address].filled) {
           const filledSquares = this.fillABar(address);
           if (filledSquares) {
-            this.humanMoveMaker();
+            setTimeout(()=> this.humanMoveMaker(), 100); 
           } //if squares were filled
            else {
             this.props.chessClock().then((result) => {
-              this.computerMoveMaker();
+              setTimeout(()=> this.computerMoveMaker(), 300);  
             });
           }
         } // if not filled
@@ -381,8 +383,9 @@ class Board extends Component {
        else {
         this.humanFilledSquareCascade(this.state.bars).then((result) => {
           if(result) {
-            this.humanMoveMaker();
+            setTimeout(()=> this.humanMoveMaker(), 100); 
           }
+
         });
       }
     }
@@ -392,7 +395,9 @@ computerMoveMaker = () => {
   console.log('computers move');
   let filledSquares = this.oppAssessMove(this.state.bars);
   if (filledSquares) {
-    this.computerMoveMaker();
+   
+    setTimeout(()=> this.computerMoveMaker(), 100); 
+
   } else {
     this.props.chessClock();
   }
