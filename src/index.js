@@ -118,6 +118,9 @@ class App extends Component {
               newGameButtonClick={this.newGameClickHandler}
               /> 
          </div>
+         <div className="aboutBox">
+          <a href="https://github.com/willdelphia/Dot-and-Box-Game-React"> <img src="/assets/github-icon.svg" className="githublogo" height="75" width="75"/></a>
+        </div>
         </div>
       </div>
     );

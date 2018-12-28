@@ -80,10 +80,10 @@ body {
   padding: 10px;
   border: none;
   width: 40px;
+  margin-right: 10px;
 }
 .newGameBox button {
   padding: 10px;
-  margin-left: 10px;
   border: none;
 }
 
@@ -99,4 +99,16 @@ body {
   margin-right: 10px;
   border: none;
   display: inline-block;
+}
+
+.aboutBox {
+  margin-top: 40px;
+}
+
+.githublogo {
+  opacity: .1;
+}
+
+.githublogo:hover {
+  opacity: .7;
 }
