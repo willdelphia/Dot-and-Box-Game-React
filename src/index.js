@@ -13,7 +13,7 @@ class App extends Component {
       whoseTurn: 0,
       humanPoints: 0,
       computerPoints: 0,
-      gameOver: false,
+      isGameOver: false,
       showForm: false, 
       boardSizeField: 10,
       boardSize: 10,
@@ -47,8 +47,8 @@ class App extends Component {
     }
   };
 
-  gameOver = () => {
-    this.setState({gameOver: true});
+  gameOverHandler = () => {
+    this.setState({isGameOver: true});
   };
 
   showFormHandler = () => {
@@ -76,9 +76,10 @@ class App extends Component {
        boardSize: size,
        boardSizeField: size,
        showForm: false, 
-       gameOver: false,
+       isGameOver: false,
        humanPoints: 0,
        computerPoints: 0,
+       whoseTurn: 0
     }
     });
   };
@@ -102,10 +103,12 @@ class App extends Component {
             whoseTurn={this.state.whoseTurn} 
             chessClock={this.chessClock} 
             addPoint={this.addPoint}
-            gameOver={this.state.gameOver} />
+            isGameOver={this.state.isGameOver}
+            gameOverHandler={this.gameOverHandler}
+             />
           </div>
         <div className="infoBox"> 
-          <div> { this.state.gameOver ? "Game Over!" : (this.state.whoseTurn ? "Computer's Turn" :  "Human's Turn") } </div>
+          <div> { this.state.isGameOver ? "Game Over!" : (this.state.whoseTurn ? "Computer's Turn" :  "Human's Turn") } </div>
           <div> Human: {this.state.humanPoints} / Computer: {this.state.computerPoints} </div>
           <NewGameForm 
               showForm={this.state.showForm} 

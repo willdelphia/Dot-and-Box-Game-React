@@ -64,7 +64,6 @@ body {
 .boardLayer {
   padding: 50px;
   background: white;
-  transition: box-shadow .1s;
 }
 
 .infoBox {

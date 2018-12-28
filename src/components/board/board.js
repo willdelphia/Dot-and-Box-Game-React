@@ -386,7 +386,7 @@ class Board extends Component {
     }
   }
   else {
-    this.props.gameOver();
+    this.props.gameOverHandler();
   }
   };
 
@@ -402,7 +402,7 @@ computerMoveMaker = () => {
   }
 }
 else {
-  this.props.gameOver();
+  this.props.gameOverHandler();
 }
 };
 
@@ -444,7 +444,7 @@ render() {
                   address = {address}
                   click = {this.humanMoveMaker}
                   filled = {this.state.bars[address].filled} 
-                  lastBar = {this.props.gameOver ? null: this.state.lastBar}
+                  lastBar = {this.props.isGameOver ? null: this.state.lastBar}
                 />
               ) : null
             } </>
@@ -471,7 +471,7 @@ render() {
               <Vbar address = {address}
                     click = {this.humanMoveMaker}
                     filled = {this.state.bars[address].filled} 
-                    lastBar = {this.props.gameOver ? null : this.state.lastBar}
+                    lastBar = {this.props.isGameOver ? null : this.state.lastBar}
                     /> 
               {x < this.props.boardSize - 1 ? ( 
               <Square address = {squareAddress}
