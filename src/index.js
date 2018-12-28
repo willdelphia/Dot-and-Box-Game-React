@@ -87,10 +87,10 @@ class App extends Component {
   render() {
 
     const boardStyle = {
-      boxShadow: this.state.whoseTurn ? 
+      boxShadow: !this.state.isGameOver ? (this.state.whoseTurn ? 
       "0px 5px 60px  rgba(255, 99, 71, 0.18), 0px 5px 20px  rgba(0, 0, 0, 0.18)" :
-      "0px 5px 60px  rgba(173, 215, 229, 0.18), 0px 5px 20px  rgba(0, 0, 0, 0.18)"
-
+      "0px 5px 60px  rgba(173, 215, 229, 0.18), 0px 5px 20px  rgba(0, 0, 0, 0.18)") :
+      "0px 5px 20px  rgba(0, 0, 0, 0.18)"
     }
 
     return (
