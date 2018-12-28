@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Board from "./components/board/board";
+import NewGameForm from "./components/newGameForm/newGameForm";
 
 import "./styles.css";
 
@@ -11,7 +12,12 @@ class App extends Component {
     this.state = {
       whoseTurn: 0,
       humanPoints: 0,
-      computerPoints: 0
+      computerPoints: 0,
+      gameOver: false,
+      showForm: false, 
+      boardSizeField: 10,
+      boardSize: 10,
+      gameId: 1
     };
   }
 
@@ -39,7 +45,42 @@ class App extends Component {
         return { humanPoints: newPoits };
       });
     }
-     
+  };
+
+  gameOver = () => {
+    this.setState({gameOver: true});
+  };
+
+  showFormHandler = () => {
+    this.setState({showForm: true});
+  };
+
+  boardSizeFieldChangeHandler = (e) => {
+    let value = e.target.value;
+    this.setState({boardSizeField: value});
+  };
+
+  newGameClickHandler = () => {
+    this.setState((state) => {
+
+      let size = this.state.boardSizeField;
+      if(size > 20) {
+        size = 20;
+      }
+      if(size < 5){
+        size = 5
+      }
+
+     return {
+       gameId: state.gameId + 1,
+       boardSize: size,
+       boardSizeField: size,
+       showForm: false, 
+       gameOver: false,
+       humanPoints: 0,
+       computerPoints: 0,
+    }
+    });
   };
 
   render() {
@@ -55,9 +96,25 @@ class App extends Component {
       <div className="container">
         <div className="containerInner"> 
           <div className="boardLayer" style={boardStyle}>
-            <Board whoseTurn={this.state.whoseTurn} chessClock={this.chessClock} addPoint={this.addPoint} />
+            <Board 
+            key={this.state.gameId}
+            boardSize={this.state.boardSize} 
+            whoseTurn={this.state.whoseTurn} 
+            chessClock={this.chessClock} 
+            addPoint={this.addPoint}
+            gameOver={this.state.gameOver} />
           </div>
-        <div className="infoBox"> {this.state.whoseTurn ? "Computer's Turn" :  "Human's Turn"} <br/> Human: {this.state.humanPoints} / Computer: {this.state.computerPoints}</div>
+        <div className="infoBox"> 
+          <div> { this.state.gameOver ? "Game Over!" : (this.state.whoseTurn ? "Computer's Turn" :  "Human's Turn") } </div>
+          <div> Human: {this.state.humanPoints} / Computer: {this.state.computerPoints} </div>
+          <NewGameForm 
+              showForm={this.state.showForm} 
+              showFormButtonClick={this.showFormHandler } 
+              boardSize={this.state.boardSizeField}
+              change={(e) => this.boardSizeFieldChangeHandler(e)}
+              newGameButtonClick={this.newGameClickHandler}
+              /> 
+         </div>
         </div>
       </div>
     );

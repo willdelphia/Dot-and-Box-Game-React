@@ -1,15 +1,11 @@
 // I think I need to work with promises or something......
 
-import React, {
-  Component
-} from "react";
+import React, { Component } from "react";
 import Dot from "./dot";
 import Hbar from "./hbar";
 import Vbar from "./vbar";
 import Square from "./square";
-import {
-  getRandomInt
-} from "../../common/functions";
+import { getRandomInt } from "../../common/functions";
 
 class barObj {
   constructor(x1, y1, x2, y2, bartype) {
@@ -35,33 +31,37 @@ class Board extends Component {
 
   timeOut = 10;
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
-    this.state = {
-      dimension: 15
-    };
+  
 
     const bars = {};
     const squares = {};
 
-    for (let y = 0; y < this.state.dimension; y++) {
-      for (let x = 0; x < this.state.dimension; x++) {
-        if (x < this.state.dimension - 1) {
+    for (let y = 0; y < props.boardSize; y++) {
+      for (let x = 0; x < props.boardSize; x++) {
+
+        const withinXdimension = x < props.boardSize - 1;
+        const withinYdimension = y < props.boardSize - 1;
+
+        if (withinXdimension) {
           bars[x + "-" + y + "_" + (x + 1) + "-" + y] = new barObj(x,y,x+1,y,"h");
         } //hbar
-        if (y < this.state.dimension - 1) {
+        if (withinYdimension) {
           bars[x + "-" + y + "_" + x + "-" + (y + 1)] = new barObj(x,y,x,y+1,"v");
         } //vbar
-        squares[x + "-" + y] = new squareObj(x, y);
+        if (withinXdimension && withinYdimension){
+          squares[x + "-" + y] = new squareObj(x, y);
+        }
+       
       }
     }
 
     this.state = {
-      dimension: this.state.dimension,
+      dimension: props.boardSize,
       whoseTurn: 0,
       lastBar: null,
-
       bars: bars,
       squares: squares
     };
@@ -218,6 +218,15 @@ class Board extends Component {
     }
   };
 
+  isTheGameOver = (squares) => {
+    let filledArray = Object.keys(squares).map((address, index) => { 
+      return squares[address].filled
+     });
+
+     const allFilled = filledArray.every((square) => square);
+     return allFilled;
+  };
+
   oppAssessMove = bars => {
     const moves = {
       twoSquareMoves: [],
@@ -285,10 +294,6 @@ class Board extends Component {
 
     return this.fillABar(whereToMove);
 
-    // const filledSquares = this.fillABar(whereToMove);
-    // if (!filledSquares) {
-    //   this.props.chessClock();
-    // }
   };
 
   oppAssessMove_looper = bars => {
@@ -335,20 +340,17 @@ class Board extends Component {
             const bottom = this.checkSquare(bars, address, "bottom");
             if (top.number === 3 || bottom.number === 3) {
               hit = address;
-              console.log("a hit");
             }
           } else if (barObj.bartype === "v") {
             const left = this.checkSquare(bars, address, "left");
             const right = this.checkSquare(bars, address, "right");
             if (left.number === 3 || right.number === 3) {
               hit = address;
-              console.log("a hit");
             }
           }
         }
       });
       if (hit) {
-        console.log("if a a hit");
         resolve(this.fillABar(hit));
       } else {
         resolve(false);
@@ -358,6 +360,7 @@ class Board extends Component {
   };
 
   humanMoveMaker = address => {
+    if(!this.isTheGameOver(this.state.squares)){ 
     if (!this.props.whoseTurn) { //human's move
       if (address) {
         if (!this.state.bars[address].filled) {
@@ -381,10 +384,14 @@ class Board extends Component {
         });
       }
     }
+  }
+  else {
+    this.props.gameOver();
+  }
   };
 
 computerMoveMaker = () => {
-  console.log('computers move');
+  if(!this.isTheGameOver(this.state.squares)){ 
   let filledSquares = this.oppAssessMove(this.state.bars);
   if (filledSquares) {
    
@@ -393,6 +400,10 @@ computerMoveMaker = () => {
   } else {
     this.props.chessClock();
   }
+}
+else {
+  this.props.gameOver();
+}
 };
 
 
@@ -420,20 +431,20 @@ render() {
     cursor: this.props.whoseTurn ? 'not-allowed' : 'pointer'
   };
   const boardArray = [];
-  for (let y = 0; y < this.state.dimension; y++) {
+  for (let y = 0; y < this.props.boardSize; y++) {
     boardArray.push(
       (() => {
         const hrow = [];
-        for (let x = 0; x < this.state.dimension; x++) {
+        for (let x = 0; x < this.props.boardSize; x++) {
           const address = x + "-" + y + "_" + (x + 1) + "-" + y;
           hrow.push( <>
             <Dot /> {
-              x < this.state.dimension - 1 ? (
+              x < this.props.boardSize - 1 ? (
                 <Hbar 
                   address = {address}
                   click = {this.humanMoveMaker}
                   filled = {this.state.bars[address].filled} 
-                  lastBar = {this.state.lastBar}
+                  lastBar = {this.props.gameOver ? null: this.state.lastBar}
                 />
               ) : null
             } </>
@@ -448,11 +459,11 @@ render() {
         );
       })()
     );
-    if (y < this.state.dimension - 1) {
+    if (y < this.props.boardSize - 1) {
       boardArray.push(
         (() => {
           const vrow = [];
-          for (let x = 0; x < this.state.dimension; x++) {
+          for (let x = 0; x < this.props.boardSize; x++) {
             const address = x + "-" + y + "_" + x + "-" + (y + 1);
             const squareAddress = x + "-" + y;
             vrow.push(
@@ -460,9 +471,9 @@ render() {
               <Vbar address = {address}
                     click = {this.humanMoveMaker}
                     filled = {this.state.bars[address].filled} 
-                    lastBar = {this.state.lastBar}
+                    lastBar = {this.props.gameOver ? null : this.state.lastBar}
                     /> 
-              {x < this.state.dimension - 1 ? ( 
+              {x < this.props.boardSize - 1 ? ( 
               <Square address = {squareAddress}
                     style = {this.squareStyleLookup(squareAddress)}
                     />) : null} 
@@ -479,7 +490,7 @@ render() {
       );
     }
   }
-  return <div style = {boardStyle} > {boardArray} </div>;
+  return <div style = {boardStyle}  class="board"> {boardArray} </div>;
 }
 }
 

@@ -70,5 +70,34 @@ body {
 .infoBox {
   text-align: center;
   padding-top: 40px;
+  line-height: 2;
 }
 
+.newGameBox {
+  margin-top: 20px;
+}
+
+.newGameBox input {
+  padding: 10px;
+  border: none;
+  width: 40px;
+}
+.newGameBox button {
+  padding: 10px;
+  margin-left: 10px;
+  border: none;
+}
+
+.containerInner {
+  text-align: center;
+}
+
+.board {
+  display: inline-block;
+}
+
+.newGameBox span {
+  margin-right: 10px;
+  border: none;
+  display: inline-block;
+}
