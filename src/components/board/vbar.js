@@ -17,8 +17,11 @@ const vbar = props => {
   <div
     className="vbar"
     style={style}
-    onClick={() => props.click(props.address, "v")}
-  >
+    onClick={() => {
+      if(props.whoseTurn == 0) {
+        props.click(props.address, "v")
+      }
+    }}  >
     <div className="clicker" />
   </div>
 );

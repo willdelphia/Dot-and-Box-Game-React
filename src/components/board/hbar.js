@@ -15,7 +15,11 @@ const hbar = props => {
     <div
     className="hbar"
     style={style}
-    onClick={() => props.click(props.address, "h")}
+    onClick={() => {
+      if(props.whoseTurn == 0) {
+        props.click(props.address, "h")
+      }
+    }}
   >
     <div className="clicker" />
   </div>

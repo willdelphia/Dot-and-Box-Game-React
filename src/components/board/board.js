@@ -455,6 +455,7 @@ render() {
                 <Hbar 
                   address = {address}
                   click = {this.humanMoveMaker}
+                  whoseTurn = {this.props.whoseTurn}
                   filled = {this.state.bars[address].filled} 
                   lastBar = {this.props.isGameOver ? null: this.state.lastBar}
                 />
@@ -482,6 +483,7 @@ render() {
               <>
               <Vbar address = {address}
                     click = {this.humanMoveMaker}
+                    whoseTurn = {this.props.whoseTurn}
                     filled = {this.state.bars[address].filled} 
                     lastBar = {this.props.isGameOver ? null : this.state.lastBar}
                     /> 
