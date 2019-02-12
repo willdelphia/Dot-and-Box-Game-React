@@ -301,25 +301,37 @@ class Board extends Component {
     const loop = bars => {
       const newBars = bars;
       const oneSquareMoves = [];
+      const twoSquareMoves = [];
       Object.keys(newBars).map((address, index) => {
         const barObj = newBars[address];
         if (!barObj.filled) {
           if (barObj.bartype === "h") {
             const top = this.checkSquare(newBars, address, "top");
             const bottom = this.checkSquare(newBars, address, "bottom");
-            if (top.number === 3 || bottom.number === 3) {
+            if (top.number === 3 && bottom.number === 3 ){
+               twoSquareMoves.push(address);
+            }
+            else if (top.number === 3 || bottom.number === 3) {
               oneSquareMoves.push(address);
             }
           } else if (barObj.bartype === "v") {
             const left = this.checkSquare(newBars, address, "left");
             const right = this.checkSquare(newBars, address, "right");
-            if (left.number === 3 || right.number === 3) {
+            if (left.number === 3 && right.number === 3 ){
+              twoSquareMoves.push(address);
+            }
+            else if (left.number === 3 || right.number === 3) {
               oneSquareMoves.push(address);
             }
           }
         }
       });
-      if (oneSquareMoves.length > 0) {
+      if(twoSquareMoves.length > 0) {
+        newBars[twoSquareMoves[0]].filled = true;
+        iterations += 2;
+        loop(newBars);
+      }
+      else if (oneSquareMoves.length > 0) {
         newBars[oneSquareMoves[0]].filled = true;
         iterations++;
         loop(newBars);
